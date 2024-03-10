@@ -20,7 +20,8 @@ try:
     while True:
         for sample in y:
             # Veriyi server'a gönder
-            client_socket.sendto(str(sample).encode(), (server_host, server_port))
+            
+            client_socket.sendto((str(round(sample, 6))+'\r').encode(), (server_host, server_port))
             
             # Bekleme süresi, örnekleme oranına göre ayarlanmalı
             time.sleep(1 / sampling_rate)

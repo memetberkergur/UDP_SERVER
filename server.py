@@ -1,7 +1,7 @@
 import socket
 
 # Server ayarları
-server_host = '192.168.1.55'  # Server'ın IP adresi
+server_host = '0.0.0.0'  # Server'ın IP adresi
 server_port = 12345             # Server'ın portu
 
 # UDP soketini oluştur
