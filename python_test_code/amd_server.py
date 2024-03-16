@@ -10,17 +10,18 @@ class UDP_Server:
         self.server_socket.bind((self.host, self.port))
         self.clients = []  # Gelen bağlantıların adres ve portunu tutacak liste
         print(f"UDP server dinleniyor. Host: {self.host}, Port: {self.port}")
+        self.running = True  # Server çalışma durumunu belirlemek için bayrak
 
     def idle(self):
         print("UDP server idle durumunda...")
-        while True:
+        while self.running:
             data, address = self.server_socket.recvfrom(1024)
             print(f"Gelen veri ({address}): {data.decode()}")
             if address not in self.clients:
                 self.clients.append(address)  # Yeni bağlantıyı listeye ekle
 
     def response(self, message, interval=2):
-        while True:
+        while self.running:
             for client in self.clients:
                 client_host, client_port = client
                 client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -29,7 +30,8 @@ class UDP_Server:
             time.sleep(interval)
 
     def close(self):
-        self.server_socket.close()
+        self.running = False  # Server çalışma durumunu durdur
+        self.server_socket.close()  # Soketi kapat
         print("UDP server kapatıldı.")
 
 # Kullanım örneği
@@ -48,4 +50,5 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         print("Server kapatılıyor...")
     finally:
-        server.close()
+        server.close()  # Server kapatma işlemi
+        response_thread.join()  # Arka planda çalışan thread'i sonlandır
