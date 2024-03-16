@@ -24,8 +24,7 @@ class UDP_Server:
         while self.running:
             for client in self.clients:
                 client_host, client_port = client
-                client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-                client_socket.sendto(message.encode(), (client_host, client_port))
+                self.server_socket.sendto(message.encode(), (client_host, client_port))
                 print(f"Mesaj gönderildi: {message} - {client_host}:{client_port}")
             time.sleep(interval)
 
